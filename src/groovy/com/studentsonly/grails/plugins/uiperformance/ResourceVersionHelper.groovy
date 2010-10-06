@@ -1,11 +1,10 @@
+package com.studentsonly.grails.plugins.uiperformance
+
 import java.security.MessageDigest;
 
 import com.plugin.utils.FileApplierUitl;
 
 import org.apache.commons.lang.SystemUtils;
-
-package com.studentsonly.grails.plugins.uiperformance
-
 import java.util.zip.GZIPOutputStream
 
 import com.yahoo.platform.yui.compressor.CssCompressor
