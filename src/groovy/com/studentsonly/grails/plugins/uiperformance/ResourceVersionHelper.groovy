@@ -80,10 +80,8 @@ class ResourceVersionHelper {
 			MessageDigest md5 = MessageDigest.getInstance("MD5");
 			md5.update(clave.getBytes());
 			password = md5.digest();
-			return password;
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
- 
 		}
 		BigInteger bigInt = new BigInteger(1, password)
 		return bigInt.toString(16)
