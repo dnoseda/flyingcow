@@ -5,13 +5,14 @@
   <description>Taglibs and Filter to implement some of the Yahoo performance team's 14 rules</description>
   <documentation>http://grails.org/plugin/ui-performance</documentation>
   <resources>
+    <resource>UrlMappings</resource>
+    <resource>com.studentsonly.grails.plugins.uiperformance.taglib.AbstractTaglib</resource>
     <resource>com.studentsonly.grails.plugins.uiperformance.taglib.CssTagLib</resource>
     <resource>com.studentsonly.grails.plugins.uiperformance.taglib.DependantJavascriptTagLib</resource>
     <resource>com.studentsonly.grails.plugins.uiperformance.taglib.ImageTagLib</resource>
-    <resource>com.studentsonly.grails.plugins.uiperformance.taglib.AbstractTaglib</resource>
     <resource>com.studentsonly.grails.plugins.uiperformance.taglib.JavascriptTagLib</resource>
     <resource>com.studentsonly.grails.plugins.uiperformance.taglib.SpriteTagLib</resource>
-    <resource>BuildConfig</resource>
   </resources>
   <dependencies />
+  <behavior />
 </plugin>

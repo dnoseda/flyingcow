@@ -211,7 +211,14 @@ class ResourceVersionHelper {
 		writeMinifiedCss css.toString(), addVersion(file, version), charset,
 			originalDate, file, keepOriginals
 	}
-
+	private boolean isExcluded(String text, List patterns){
+		for (String pattern : patterns) {
+			if(text ==~ pattern){
+				return true
+			}
+		}
+		return false
+	}
 	private void versionAndMinifyJs(file, version, charset, jsErrorReporter, boolean keepOriginals) {
 
 		Date originalDate = new Date(file.lastModified())
@@ -220,8 +227,8 @@ class ResourceVersionHelper {
 		String versionedName = addVersion(file, version)
 
 		boolean minifyJs = Utils.getConfigBoolean('minifyJs')
-		String excludes = Utils.getConfigValue('excludedMinifiedJs', null) 
-		if (minifyJs && (excludes && !excludes ==~ file.getName())) {
+		List excludes = Utils.getConfigValue('excludedMinifiedJs', null) 
+		if (minifyJs && (excludes && !isExcluded(file.getName(), excludes)) {
 			boolean minifyJsAsErrorCheck = Utils.getConfigBoolean('minifyJsAsErrorCheck', false)
 			try {
 				Reader jsIn

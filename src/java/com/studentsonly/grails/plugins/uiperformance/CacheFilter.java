@@ -54,7 +54,6 @@ public class CacheFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse)res;
 
 		String uri = request.getRequestURI();
-
 		if (isEnabled() && isCacheable(uri)) {
 			response.setDateHeader("Expires", System.currentTimeMillis() + TEN_YEARS_MILLIS);
 			response.setHeader("Cache-Control", MAX_AGE);

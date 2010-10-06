@@ -34,3 +34,4 @@ BKPdevDbVip.*
 *.patch
 login.toDelete
 clover.license
+grails-*.zip
