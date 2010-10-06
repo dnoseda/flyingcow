@@ -75,7 +75,7 @@ class ResourceVersionHelper {
 		return bigInt.toString(16)
 	 }
 	public String generateMd5String(String clave){
-		byte[] password = {00};
+		byte[] password = [00];
 		try {
 			MessageDigest md5 = MessageDigest.getInstance("MD5");
 			md5.update(clave.getBytes());
@@ -85,7 +85,6 @@ class ResourceVersionHelper {
 			e.printStackTrace();
  
 		}
-		return password;
 		BigInteger bigInt = new BigInteger(1, password)
 		return bigInt.toString(16)
 	}
@@ -111,7 +110,9 @@ class ResourceVersionHelper {
 					{File file ->
 						return generateMD5(file)
 					})
-			return generateMd5String(md5s.join(""))[0..10]
+			String md5 = generateMd5String(md5s.join(""))
+			println "md5 generado: ${md5}"
+			return md5[0..Math.min(10, md5.length()-1)]
 		}else{
 			println "Generating Version with System.currentTimeInMillis()"
 			return System.currentTimeMillis().toString()
