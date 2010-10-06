@@ -220,7 +220,8 @@ class ResourceVersionHelper {
 		String versionedName = addVersion(file, version)
 
 		boolean minifyJs = Utils.getConfigBoolean('minifyJs')
-		if (minifyJs) {
+		String excludes = Utils.getConfigValue('excludedMinifiedJs', null) 
+		if (minifyJs && (excludes && !excludes ==~ file.getName())) {
 			boolean minifyJsAsErrorCheck = Utils.getConfigBoolean('minifyJsAsErrorCheck', false)
 			try {
 				Reader jsIn
