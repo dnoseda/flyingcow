@@ -96,8 +96,6 @@ class ResourceVersionHelper {
 			return entries.text.split('\n')[3].trim()
 		}
 
-		// TODO  need something better than this
-		
 		try{
 			println "Generating Version with acum m5d of directories \"web-app/images\", \"web-app/js\", \"web-app/css\""
 			List md5s = FileApplierUitl.applyFunc(["web-app/images", "web-app/js", "web-app/css"],
