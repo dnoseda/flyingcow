@@ -76,13 +76,9 @@ class ResourceVersionHelper {
 	 }
 	public String generateMd5String(String clave){
 		byte[] password = [00];
-		try {
-			MessageDigest md5 = MessageDigest.getInstance("MD5");
-			md5.update(clave.getBytes());
-			password = md5.digest();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+		MessageDigest md5 = MessageDigest.getInstance("MD5");
+		md5.update(clave.getBytes());
+		password = md5.digest();
 		BigInteger bigInt = new BigInteger(1, password)
 		return bigInt.toString(16)
 	}
@@ -102,7 +98,7 @@ class ResourceVersionHelper {
 
 		// TODO  need something better than this
 		
-		if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC){
+		try{
 			println "Generating Version with acum m5d of directories \"web-app/images\", \"web-app/js\", \"web-app/css\""
 			List md5s = FileApplierUitl.applyFunc(["web-app/images", "web-app/js", "web-app/css"],
 					{File file ->
@@ -111,8 +107,8 @@ class ResourceVersionHelper {
 			String md5 = generateMd5String(md5s.join(""))
 			println "md5 generado: ${md5}"
 			return md5[0..Math.min(10, md5.length()-1)]
-		}else{
-			println "Generating Version with System.currentTimeInMillis()"
+		}catch (Exception e){
+			println "Generating Version becouse error ${e} with System.currentTimeInMillis()"
 			return System.currentTimeMillis().toString()
 		}
 	}
