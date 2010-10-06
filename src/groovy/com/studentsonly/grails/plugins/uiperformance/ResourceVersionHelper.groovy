@@ -1,3 +1,9 @@
+import java.security.MessageDigest;
+
+import com.plugin.utils.FileApplierUitl;
+
+import org.apache.commons.lang.SystemUtils;
+
 package com.studentsonly.grails.plugins.uiperformance
 
 import java.util.zip.GZIPOutputStream
@@ -54,11 +60,41 @@ class ResourceVersionHelper {
 			throw e
 		}
 	}
+	
+	public String generateMD5(final File file) {
+		MessageDigest digest = MessageDigest.getInstance("MD5")
+		file.withInputStream(){is->
+		byte[] buffer = new byte[8192]
+		int read = 0
+		   while( (read = is.read(buffer)) > 0) {
+				  digest.update(buffer, 0, read);
+			  }
+		  }
+		byte[] md5sum = digest.digest()
+		BigInteger bigInt = new BigInteger(1, md5sum)
+		return bigInt.toString(16)
+	 }
+	public String generateMd5String(String clave){
+		byte[] password = {00};
+		try {
+			MessageDigest md5 = MessageDigest.getInstance("MD5");
+			md5.update(clave.getBytes());
+			password = md5.digest();
+			return password;
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+ 
+		}
+		return password;
+		BigInteger bigInt = new BigInteger(1, password)
+		return bigInt.toString(16)
+	}
 
 	private String determineVersion(String basedir) {
 
 		def determineVersionClosure = CH.config.uiperformance.determineVersion
 		if (determineVersionClosure instanceof Closure) {
+			println "Generating Version with configured closure in Config.groovy"
 			return determineVersionClosure()
 		}
 
@@ -68,7 +104,18 @@ class ResourceVersionHelper {
 		}
 
 		// TODO  need something better than this
-		return System.currentTimeMillis().toString()
+		
+		if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC){
+			println "Generating Version with acum m5d of directories \"web-app/images\", \"web-app/js\", \"web-app/css\""
+			List md5s = FileApplierUitl.applyFunc(["web-app/images", "web-app/js", "web-app/css"],
+					{File file ->
+						return generateMD5(file)
+					})
+			return generateMd5String(md5s.join(""))[0..10]
+		}else{
+			println "Generating Version with System.currentTimeInMillis()"
+			return System.currentTimeMillis().toString()
+		}
 	}
 
 	private void versionResources(File stagingDir, String version, String basedir) {
