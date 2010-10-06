@@ -1,6 +1,7 @@
 package com.studentsonly.grails.plugins.uiperformance
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import com.plugin.utils.FileApplierUitl;
 
