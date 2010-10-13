@@ -2,6 +2,7 @@ import org.codehaus.groovy.grails.commons.GrailsApplication
 
 import grails.util.GrailsUtil
 
+import com.plugin.etagFilter.EtagFilter;
 import com.studentsonly.grails.plugins.uiperformance.CacheFilter
 
 import com.studentsonly.grails.plugins.uiperformance.postprocess.CssTagPostProcessor
@@ -46,6 +47,14 @@ class UiPerformanceGrailsPlugin {
 			'filter' {
 				'filter-name'('cacheFilter')
 				'filter-class'(CacheFilter.name)
+			}
+		}
+		if(isEtagFilterEnabled(application)){
+			contextParam[contextParam.size() - 1] + {
+				'filter' {
+					'filter-name'('etagFilter')
+					'filter-class'(EtagFilter.name)
+				}
 			}
 		}
 
@@ -121,6 +130,15 @@ class UiPerformanceGrailsPlugin {
 				}
 			}
 		}
+		
+		if(isEtagFilterEnabled(application)){
+			filter[filter.size() - 1] + {
+				'filter-mapping' {
+					'filter-name'('etagFilter')
+					'url-pattern'('/*')
+				}
+			}
+		}
 	}
 
 	def doWithDynamicMethods = { ctx ->
@@ -141,6 +159,10 @@ class UiPerformanceGrailsPlugin {
 
 	private boolean isEnabled(application) {
 		def enabled = application.config.uiperformance.enabled
+		return enabled instanceof Boolean ? enabled : true
+	}
+	private boolean isEtagFilterEnabled(application) {
+		def enabled = application.config.uiperformance.etagfilter
 		return enabled instanceof Boolean ? enabled : true
 	}
 }
