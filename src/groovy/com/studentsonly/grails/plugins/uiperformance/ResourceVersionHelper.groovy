@@ -97,16 +97,16 @@ class ResourceVersionHelper {
 		}
 
 		try{
-			println "Generating Version with acum m5d of directories \"web-app/images\", \"web-app/js\", \"web-app/css\""
+			println "Generating Version with acum md5 of all the files in \"web-app/images\", \"web-app/js\", \"web-app/css\""
 			List md5s = FileApplierUitl.applyFunc(["web-app/images", "web-app/js", "web-app/css"],
 					{File file ->
 						return generateMD5(file)
 					})
 			String md5 = generateMd5String(md5s.join(""))
-			println "md5 generado: ${md5}"
+			println "md5 generated: ${md5}"
 			return md5[0..Math.min(10, md5.length()-1)]
 		}catch (Exception e){
-			println "Generating Version becouse error ${e} with System.currentTimeInMillis()"
+			println "Generating Version with System.currentTimeInMillis() because error ${e} "
 			return System.currentTimeMillis().toString()
 		}
 	}
