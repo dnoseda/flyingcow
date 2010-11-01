@@ -498,7 +498,7 @@ class ResourceVersionHelper {
 	}
 
 	private void buildSprites(File rootDir) {
-		def parameters = new SmartSpritesParameters(new File(rootDir, 'css'))
+		def parameters = new SmartSpritesParameters((new File(rootDir, 'css')).getPath())
 		parameters.cssFileSuffix = SPRITE_CSS_SUFFIX
 		def messageSink = new MemoryMessageSink()
 		def messageLog = new MessageLog(messageSink)
