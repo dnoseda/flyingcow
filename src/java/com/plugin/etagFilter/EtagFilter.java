@@ -78,9 +78,13 @@ public class EtagFilter implements Filter {
 			};
 			chain.doFilter(servletRequest, wrappedResponse);
 			StrBuilder str = new StrBuilder("");
-			for (Cookie cookie : servletRequest.getCookies()) {
-				str.append(cookie.getName()).append("=")
-						.append(cookie.getValue()).append("\n");
+			// TODO: tomar vary por configuracion, además el vary son campos, no valores, me la eché :P
+			if(servletRequest.getCookies() !=null){
+	
+				for (Cookie cookie : servletRequest.getCookies()) {
+					str.append(cookie.getName()).append("=")
+							.append(cookie.getValue()).append("\n");
+				}
 			}
 			String varyHeaders = servletRequest.getHeader("Accept") != null ? servletRequest
 					.getHeader("Accept") : "" + str.toString();
