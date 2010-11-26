@@ -107,6 +107,27 @@ class UiPerformanceGrailsPlugin {
 				}
 			}
 		}
+		
+		if(isHtmlMinifizerEnabled(application)){
+			def htmlMiniConfig = application.config.uiperformance.htmlminifizer
+			println htmlMiniConfig
+			contextParam[contextParam.size() - 1] + {
+				'filter' {
+					'filer-name' ("html-minimizer")
+					'filter-class' ("com.mercadolibre.web.minimizer.HtmlMinimizerFilter")
+					[[configName:"inclusionPatterns",name:"inclusion-patterns"],
+						[configName:"exclusionPatterns",name:"exclusion-patterns"]].each {
+						def paramName = it.name
+						def paramValue = htmlMiniConfig[it.configName]?.join(";") ?: ""
+						
+						'init-param' {
+							'param-name'(paramName)
+							'param-value'(paramValue)
+						}
+					}
+				}
+			}
+		}
 
 		def filter = xml.'filter'
 		filter[filter.size() - 1] + {
@@ -144,24 +165,6 @@ class UiPerformanceGrailsPlugin {
 		 */
 		
 		if(isHtmlMinifizerEnabled(application)){
-			def htmlMiniConfig = application.config.uiperformance.htmlminifizer
-			println htmlMiniConfig
-			contextParam[contextParam.size()-1] + {
-				'filter'{
-					'filer-name' ("html-minimizer")
-					'filter-class' ("com.mercadolibre.web.minimizer.HtmlMinimizerFilter")
-					[[configName:"inclusionPatterns",name:"inclusion-patterns"],
-						[configName:"exclusionPatterns",name:"exclusion-patterns"]].each {
-							if(htmlMiniConfig[it.configName]){
-								'init-param' {
-									'param-name'(it.name)
-									'param-value'(htmlMiniConfig[it.configName].join(";"))
-								}
-							}
-						}
-				}
-			}
-			
 			int pos = -1
 			for(int i = 0; i< filter.size() ; i++){
 				println filter[i]["filter-name"]
@@ -174,6 +177,10 @@ class UiPerformanceGrailsPlugin {
 					'filter-name'('html-minimizer')
 					'url-pattern'('/*')
 				}
+			}
+			println "filters mappings:"
+			for(int i = 0; i< filter.size() ; i++){
+				println filter[i]["filter-name"]
 			}
 		}
 	}
