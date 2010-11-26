@@ -138,6 +138,34 @@ class UiPerformanceGrailsPlugin {
 					'url-pattern'('/*')
 				}
 			}
+		}		
+		/**
+		 * 
+		 */
+		
+		if(isHtmlMinifizerEnabled(application)){
+			def htmlMiniConfig = application.config.uiperformance.htmlminifizer
+			contextParam[contextParam.size()-1] + {
+				'filter'{
+					'filer-name' ("html-minimizer")
+					'filter-class' ("com.mercadolibre.web.minimizer.HtmlMinimizerFilter")
+					[[configName:"inclusionPatterns",name:"inclusion-patterns"],
+						[configName:"exclusionPatterns",name:"exclusion-patterns"]].each {
+							if(htmlMiniConfig[it.configName]){
+								'init-param' {
+									'param-name'(it.name)
+									'param-value'(htmlMiniConfig[it.configName].join(";"))
+								}
+							}
+						}
+				}
+			}
+//			filter[filter.size() - 1] + {
+//				'filter-mapping' {
+//					'filter-name'('html-minimizer')
+//					'url-pattern'('/*')
+//				}
+//			}
 		}
 	}
 
@@ -159,10 +187,14 @@ class UiPerformanceGrailsPlugin {
 
 	private boolean isEnabled(application) {
 		def enabled = application.config.uiperformance.enabled
-		return enabled instanceof Boolean ? enabled : true
+		return enabled instanceof Boolean ? enabled : false
 	}
 	private boolean isEtagFilterEnabled(application) {
 		def enabled = application.config.uiperformance.etagfilter
-		return enabled instanceof Boolean ? enabled : true
+		return enabled instanceof Boolean ? enabled : false
+	}
+	private boolean isHtmlMinifizerEnabled(application) {
+		def enabled = application.config.uiperformance.htmlMinifizer
+		return enabled instanceof Boolean ? enabled : false
 	}
 }
