@@ -160,12 +160,19 @@ class UiPerformanceGrailsPlugin {
 						}
 				}
 			}
-//			filter[filter.size() - 1] + {
-//				'filter-mapping' {
-//					'filter-name'('html-minimizer')
-//					'url-pattern'('/*')
-//				}
-//			}
+			
+			int pos = -1
+			for(int i = 0; i< filter.size() ; i++){
+				if(filter[i]["filter-name"] == "sitemesh"){
+					pos = i
+				}
+			}
+			filter[i-1] + {
+				'filter-mapping' {
+					'filter-name'('html-minimizer')
+					'url-pattern'('/*')
+				}
+			}
 		}
 	}
 
