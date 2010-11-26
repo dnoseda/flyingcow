@@ -11,7 +11,7 @@ import com.studentsonly.grails.plugins.uiperformance.postprocess.JsTagPostProces
 
 class UiPerformanceGrailsPlugin {
 
-	String version = '1.2.4'
+	String version = '1.2.5'
 	String grailsVersion = '1.0 > *'
 	Map dependsOn = [:]
 	List pluginExcludes = [
@@ -145,6 +145,7 @@ class UiPerformanceGrailsPlugin {
 		
 		if(isHtmlMinifizerEnabled(application)){
 			def htmlMiniConfig = application.config.uiperformance.htmlminifizer
+			println htmlMiniConfig
 			contextParam[contextParam.size()-1] + {
 				'filter'{
 					'filer-name' ("html-minimizer")
@@ -163,11 +164,12 @@ class UiPerformanceGrailsPlugin {
 			
 			int pos = -1
 			for(int i = 0; i< filter.size() ; i++){
+				println filter[i]["filter-name"]
 				if(filter[i]["filter-name"] == "sitemesh"){
 					pos = i
 				}
 			}
-			filter[i-1] + {
+			filter[pos-1] + {
 				'filter-mapping' {
 					'filter-name'('html-minimizer')
 					'url-pattern'('/*')
@@ -194,7 +196,7 @@ class UiPerformanceGrailsPlugin {
 
 	private boolean isEnabled(application) {
 		def enabled = application.config.uiperformance.enabled
-		return enabled instanceof Boolean ? enabled : false
+		return enabled instanceof Boolean ? enabled : true
 	}
 	private boolean isEtagFilterEnabled(application) {
 		def enabled = application.config.uiperformance.etagfilter
@@ -202,6 +204,7 @@ class UiPerformanceGrailsPlugin {
 	}
 	private boolean isHtmlMinifizerEnabled(application) {
 		def enabled = application.config.uiperformance.htmlMinifizer
+		println "minifizer enabled $enabled"
 		return enabled instanceof Boolean ? enabled : false
 	}
 }
