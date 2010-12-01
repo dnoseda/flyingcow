@@ -38,8 +38,11 @@ abstract class AbstractTagPostProcessor {
 			String path = html.substring(indexQuoteStart, indexQuoteEnd)
 
 			String name = Utils.addVersion(path)
-			if (gzip && !Utils.isExcluded(path)) {
-				String ae = request.getHeader('accept-encoding')
+			String ae = request.getHeader('accept-encoding')
+			if(CH.config.uiperformance.logheader){
+				println "UIPERF: accept-enc '${ae}', user-agent \"${request.getHeader('User-Agent')}\" do gzip ${ae && ae.contains('gzip')} gzip:${gzip} path'$path' included:${Utils.isExcluded(path)}"
+			}
+			if (gzip && !Utils.isExcluded(path)) {			
 				if (ae && ae.contains('gzip')) {
 					name = (name - ".$ext") + ".gz.$ext"
 				}
