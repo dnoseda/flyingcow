@@ -125,7 +125,7 @@ class ResourceVersionHelper {
 		boolean processJS = Utils.getConfigBoolean('processJS')
 		boolean processCSS = Utils.getConfigBoolean('processCSS')
 		boolean processImages = Utils.getConfigBoolean('processImages')
-		boolean keepOriginals = Utils.getConfigBoolean('keepOriginals', false)
+		boolean keepOriginals = Utils.getConfigBoolean('keepOriginals', true)
 		List imageExtensions = Utils.getConfigValue('imageExtensions', Utils.DEFAULT_IMAGE_EXTENSIONS)
 
 		stagingDir.eachFileRecurse { file ->

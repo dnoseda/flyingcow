@@ -40,15 +40,25 @@ abstract class AbstractTagPostProcessor {
 			String name = Utils.addVersion(path)
 			String ae = request.getHeader('accept-encoding')
 			if(CH.config.uiperformance.logheader){
-				println "UIPERF: accept-enc '${ae}', user-agent \"${request.getHeader('User-Agent')}\" do gzip ${ae && ae.contains('gzip')} gzip:${gzip} path'$path' included:${Utils.isExcluded(path)}"
+				println "UIPERF: url ${request.request.requestURL} name ${name} accept-enc '${ae}', user-agent \"${request.getHeader('User-Agent')}\" do gzip ${ae && ae.contains('gzip')} gzip:${gzip} path'$path' included:${Utils.isExcluded(path)}"
+				def debugHeaders = [:]
+				request.getHeaderNames().each { rname -> debugHeaders[rname] = "-->"+request.getHeader(rname)+"<--"}
+				println "UIPERF: url ${request.request.requestURL} name ${name} user-agent \"${request.getHeader('User-Agent')}\" headers: --${debugHeaders}--"
 			}
-			if (gzip && !Utils.isExcluded(path)) {			
+			if (gzip && !Utils.isExcluded(path)) {
 				if (ae && ae.contains('gzip')) {
+					if(CH.config.uiperformance.logheader){
+						println "UIPERF: url ${request.request.requestURL} ENTRO! user-agent \"${request.getHeader('User-Agent')}\""
+					}
 					name = (name - ".$ext") + ".gz.$ext"
 				}
 			}
-
-			return html.substring(0, indexQuoteStart) + name + html.substring(indexQuoteEnd)
+			String ret = html.substring(0, indexQuoteStart) + name + html.substring(indexQuoteEnd)
+			if(CH.config.uiperformance.logheader){
+				println "UIPERF: url ${request.request.requestURL} name final '${name}' return '${ret}' user-agent \"${request.getHeader('User-Agent')}\""
+			}
+			
+			return ret
 		}
 
 		return html
