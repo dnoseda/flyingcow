@@ -1,5 +1,7 @@
 package com.studentsonly.grails.plugins.uiperformance.taglib
 
+
+import org.codehaus.groovy.grails.commons.ConfigurationHolder as CH
 /**
  * Abstract base class for taglibs.
  *
@@ -27,12 +29,16 @@ abstract class AbstractTaglib {
 		return extra
 	}
 
-	protected String generateRelativePath(dir, name, extension, plugin, absolute) {
+	protected String generateRelativePath(dir, name, extension, plugin, absolute) {		
 		if ('true' == absolute) {
 			return name
 		}
 
 		String baseUri = grailsAttributes.getApplicationUri(request)
+		// TODO: test if it is configured a new base url (cdn for instance)
+		if(true){
+			baseUri = "http://vip.mercadolibre.com.pa"
+		}
 		StringBuilder path = new StringBuilder(baseUri)
 		if (!baseUri.endsWith('/')) {
 			path.append '/'
