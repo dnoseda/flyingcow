@@ -35,9 +35,8 @@ abstract class AbstractTaglib {
 		}
 
 		String baseUri = grailsAttributes.getApplicationUri(request)
-		// TODO: test if it is configured a new base url (cdn for instance)
-		if(true){
-			baseUri = "http://vip.mercadolibre.com.pa"
+		if(CH.config.uiperformance.staticBaseUrlGenerator){
+			baseUri = CH.config.uiperformance.staticBaseUrlGenerator(request)
 		}
 		StringBuilder path = new StringBuilder(baseUri)
 		if (!baseUri.endsWith('/')) {
