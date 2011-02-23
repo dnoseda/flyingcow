@@ -1,5 +1,7 @@
 package com.studentsonly.grails.plugins.uiperformance.taglib
 
+import java.util.ArrayList;
+
 /**
  * Allows deferred declaration of JavaScript files and rendering of the tags at the end of the body
  * for faster page loads.
@@ -12,22 +14,21 @@ package com.studentsonly.grails.plugins.uiperformance.taglib
 class DependantJavascriptTagLib {
 
 	static namespace = 'p'
-
+	static ThreadLocal<List> jsBlocks = new ThreadLocal<List>()
 	def dependantJavascript = { attrs, body ->
 		String js = attrs.javascript ?: body()
-		def jsBlocks = request.jsBlocks
-		if (!jsBlocks) {
-			jsBlocks = []
-			request.jsBlocks = jsBlocks
+		if (!jsBlocks.get()) {
+			jsBlocks.set(new ArrayList())
 		}
-		jsBlocks << js
+		jsBlocks.get() << js
 	}
 
 	def renderDependantJavascript = {
-		for (js in request.jsBlocks) {
+		for (js in jsBlocks) {
 			out << js
 			out << '\n'
 		}
+		jsBlocks.set(new ArrayList())
 	}
 
 	/**
