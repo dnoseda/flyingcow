@@ -15,6 +15,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 
 import org.codehaus.groovy.grails.commons.ConfigurationHolder;
 import org.springframework.util.AntPathMatcher;
@@ -53,16 +54,32 @@ public class CacheFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest)req;
 		HttpServletResponse response = (HttpServletResponse)res;
 		String uri = request.getRequestURI();
+		boolean cached = false;
 		if (isEnabled() && isCacheable(uri)) {
 			response.setDateHeader("Expires", System.currentTimeMillis() + TEN_YEARS_MILLIS);
 			response.setHeader("Cache-Control", MAX_AGE);
 			if (uri.endsWith(".gz.css") || uri.endsWith(".gz.js")) {
 				response.addHeader("Content-Encoding", "gzip");
 				response.addHeader("Vary", "Accept-Encoding");
+				cached = true;			
 			}
 		}
 
-		chain.doFilter(request, response);
+// if you want to not use etag cache header
+//		if(cached){
+//			chain.doFilter(request, new HttpServletResponseWrapper(response) {
+//			      public void setHeader(String name, String value) {
+//			          if ("etag".equalsIgnoreCase(name)) {
+//			        	  super.setHeader("X-ex-etag", value);
+//			        	  (new Exception()).printStackTrace();
+//			          }else{
+//			              super.setHeader(name, value);
+//			          }
+//			      }
+//			  });
+//		}else{
+			chain.doFilter(request, response);
+//		}
 	}
 
 	private boolean isEnabled() {
