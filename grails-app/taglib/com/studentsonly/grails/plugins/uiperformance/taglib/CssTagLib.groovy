@@ -79,7 +79,7 @@ class CssTagLib extends AbstractTaglib {
 			log.error("with attrs $attrs", grails.util.GrailsUtil.sanitize(e))
 		}
 		if(embebedMap[html]){
-			out << embebedMap[html]
+			out << "<style type='text/css'>${embebedMap[html]}</style>" 
 		}else{
 			 out << html
 		}
