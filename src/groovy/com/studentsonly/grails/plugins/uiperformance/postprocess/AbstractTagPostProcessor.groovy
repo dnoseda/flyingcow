@@ -10,6 +10,10 @@ import com.studentsonly.grails.plugins.uiperformance.Utils
  * @author <a href='mailto:burt@burtbeckwith.com'>Burt Beckwith</a>
  */
 abstract class AbstractTagPostProcessor {
+	
+	public static String getClassesDir() {
+		return AbstractTagPostProcessor.class.getProtectionDomain().getCodeSource().getLocation().getPath().replaceAll("/com/studentsonly/grails/plugins/uiperformance/postprocess/AbstractTagPostProcessor\\.class","");
+	}
 
 	String process(String html, request) {
 
@@ -39,24 +43,12 @@ abstract class AbstractTagPostProcessor {
 
 			String name = Utils.addVersion(path)
 			String ae = request.getHeader('accept-encoding')
-			if(CH.config.uiperformance.logheader){
-				println "UIPERF: url ${request.request.requestURL} name ${name} accept-enc '${ae}', user-agent \"${request.getHeader('User-Agent')}\" do gzip ${ae && ae.contains('gzip')} gzip:${gzip} path'$path' included:${Utils.isExcluded(path)}"
-				def debugHeaders = [:]
-				request.getHeaderNames().each { rname -> debugHeaders[rname] = "-->"+request.getHeader(rname)+"<--"}
-				println "UIPERF: url ${request.request.requestURL} name ${name} user-agent \"${request.getHeader('User-Agent')}\" headers: --${debugHeaders}--"
-			}
 			if (gzip && !Utils.isExcluded(path)) {
 				if (ae && ae.contains('gzip')) {
-					if(CH.config.uiperformance.logheader){
-						println "UIPERF: url ${request.request.requestURL} ENTRO! user-agent \"${request.getHeader('User-Agent')}\""
-					}
 					name = (name - ".$ext") + ".gz.$ext"
 				}
 			}
 			String ret = html.substring(0, indexQuoteStart) + name + html.substring(indexQuoteEnd)
-			if(CH.config.uiperformance.logheader){
-				println "UIPERF: url ${request.request.requestURL} name final '${name}' return '${ret}' user-agent \"${request.getHeader('User-Agent')}\""
-			}
 			
 			return ret
 		}
