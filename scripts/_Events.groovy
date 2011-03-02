@@ -12,11 +12,12 @@ eventWarStart = { name ->
 /**
  * In 1.1 this is called after the staging dir is prepared but before the war is packaged.
  */
-eventCreateWarStart = { name, stagingDir ->
+eventCreateWarStart = { name, stagingDir ->	
 	versionResources name, stagingDir
 }
 
 void versionResources(name, stagingDir) {
+	
 	def classLoader = Thread.currentThread().contextClassLoader
 	classLoader.addURL(new File(classesDirPath).toURL())
 
@@ -29,7 +30,7 @@ void versionResources(name, stagingDir) {
 		return
 	}
 
-	println "\nUiPerformance: versioning resources ...\n"
+	println "\nUiPerformance: versioning resources ....\n"
 
 	String className = 'com.studentsonly.grails.plugins.uiperformance.ResourceVersionHelper'
 	def helper = Class.forName(className, true, classLoader).newInstance()
