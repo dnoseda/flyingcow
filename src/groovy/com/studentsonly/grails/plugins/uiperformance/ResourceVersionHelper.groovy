@@ -240,9 +240,18 @@ class ResourceVersionHelper {
 					css.append line
 				}
 				else {
-					css.append line.substring(0, index + 4)
-					addVersion css, url, version
+					String baseUri = ""
+					
+					if(CH.config.uiperformance.staticBaseUrlGenerator){
+						baseUri += CH.config.uiperformance.staticBaseUrlGenerator(null)
+					}
+					String before = line.substring(0, index + 4) + baseUri.replaceAll("//", "/")
+					css.append before					
+					StringBuilder partial = new StringBuilder()
+					addVersion partial, url, version
+					css.append partial.toString()
 					css.append line.substring(index2)
+					println "file: $file partial: '$partial' baseuri: '$baseUri' before: '$before'"
 				}
 			}
 			css.append '\n'
