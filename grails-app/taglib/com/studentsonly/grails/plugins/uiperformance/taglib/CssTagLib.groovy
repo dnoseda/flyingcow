@@ -71,7 +71,7 @@ class CssTagLib extends AbstractTaglib {
 				if(CH.config.uiperformance.staticBaseUrlGenerator){
 					baseUri = CH.config.uiperformance.staticBaseUrlGenerator(request)
 				}		
-				String loc = ((html =~ /href=.*\.css/)[0].substring(5 + baseUri.length())).replaceAll(/\.gz\.css/,".css")
+				String loc = ((html =~ /href=.*\.css/)[0].substring(5 + baseUri?.length() ?: 0)).replaceAll(/\.gz\.css/,".css")
 				File baseDir= new File(com.studentsonly.grails.plugins.uiperformance.postprocess.AbstractTagPostProcessor.getClassesDir())
 				embebedMap[html] = new File(baseDir.getParentFile().getParentFile(),loc).getText("UTF-8")
 			}

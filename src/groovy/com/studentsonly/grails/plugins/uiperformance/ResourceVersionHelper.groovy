@@ -236,18 +236,12 @@ class ResourceVersionHelper {
 			if(index >0 ){
 				cssuri = line.substring(index + 4, line.indexOf(')', index))
 			}
-//			if(file.toString().contains("idML_HTML5")){
-//				println """versionAndRewriteCss idML_HTML5 index $index line '$line' condition ${(!processImages || index == -1 || cssuri?.contains('http') || isData)} $isData $processImages"""
-//			}
 			if (!processImages || index == -1 || cssuri?.contains('http') || isData) {
 				css.append line
 			}
 			else {
 				int index2 = line.indexOf(')', index)
 				String url = line.substring(index + 4, index2)
-//				if(file.toString().contains("idML_HTML5")){
-//					println "versionAndRewriteCss idML_HTML5 index $index line '$line' excluded ${Utils.isExcluded(url)}"
-//				}
 				if (Utils.isExcluded(url)) {
 					css.append line
 				}
@@ -263,7 +257,6 @@ class ResourceVersionHelper {
 					addVersion partial, url, version
 					css.append partial.toString().replaceAll("'","")
 					css.append line.substring(index2)
-//					println "file: $file partial: '$partial' baseuri: '$baseUri' before: '$before'"
 				}
 			}
 			css.append '\n'
