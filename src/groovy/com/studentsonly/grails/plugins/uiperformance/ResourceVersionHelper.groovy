@@ -251,11 +251,11 @@ class ResourceVersionHelper {
 					if(CH.config.uiperformance.staticBaseUrlGenerator){
 						baseUri += CH.config.uiperformance.staticBaseUrlGenerator(null)
 					}
-					String before = line.substring(0, index + 4) + baseUri.replaceAll("//", "/")
+					String before = line.substring(0, index + 4) + baseUri.replaceAll("//", "/").replaceAll("\"","")
 					css.append before					
 					StringBuilder partial = new StringBuilder()
 					addVersion partial, url, version
-					css.append partial.toString().replaceAll("'","")
+					css.append partial.toString().replaceAll("'","").replaceAll("\"","")
 					css.append line.substring(index2)
 				}
 			}
