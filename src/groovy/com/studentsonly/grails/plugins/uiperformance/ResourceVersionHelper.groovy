@@ -124,6 +124,7 @@ class ResourceVersionHelper {
 		def jsErrorReporter = new JsErrorReporter()
 		boolean processJS = Utils.getConfigBoolean('processJS')
 		boolean processCSS = Utils.getConfigBoolean('processCSS')
+		print "processJS: $processJS"
 		boolean processImages = Utils.getConfigBoolean('processImages')
 		boolean keepOriginals = Utils.getConfigBoolean('keepOriginals', true)
 		List imageExtensions = Utils.getConfigValue('imageExtensions', Utils.DEFAULT_IMAGE_EXTENSIONS)
@@ -195,6 +196,7 @@ class ResourceVersionHelper {
 		}
 
 		if (processJS && file.name.toLowerCase().endsWith('.js')) {
+			println "proceso JS para file $file"
 			versionAndMinifyJs file, version, charset, jsErrorReporter, keepOriginals
 			return
 		}
@@ -281,8 +283,9 @@ class ResourceVersionHelper {
 		String versionedName = addVersion(file, version)
 
 		boolean minifyJs = Utils.getConfigBoolean('minifyJs')
-		List excludes = Utils.getConfigValue('excludedMinifiedJs', null) 
-		if (minifyJs && (excludes && !isExcluded(file.getName(), excludes))) {
+		List excludes = Utils.getConfigValue('excludedMinifiedJs', []) 
+		boolean excludeThis = excludes && isExcluded(file.getName(), excludes)
+		if (minifyJs && !excludeThis) {
 			boolean minifyJsAsErrorCheck = Utils.getConfigBoolean('minifyJsAsErrorCheck', false)
 			try {
 				Reader jsIn
@@ -290,8 +293,9 @@ class ResourceVersionHelper {
 				try {
 					jsIn = new InputStreamReader(new FileInputStream(file), charset)
 					compressor = new JavaScriptCompressor(jsIn, jsErrorReporter)
-				}
-				finally {
+				}catch(Exception e){
+					e.printStackTrace()
+				}finally {
 					close jsIn
 				}
 
