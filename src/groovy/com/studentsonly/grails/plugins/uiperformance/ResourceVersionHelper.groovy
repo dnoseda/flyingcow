@@ -196,7 +196,6 @@ class ResourceVersionHelper {
 		}
 
 		if (processJS && file.name.toLowerCase().endsWith('.js')) {
-			println "proceso JS para file $file"
 			versionAndMinifyJs file, version, charset, jsErrorReporter, keepOriginals
 			return
 		}

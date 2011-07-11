@@ -65,21 +65,7 @@ public class CacheFilter implements Filter {
 			}
 		}
 
-// if you want to not use etag cache header
-//		if(cached){
-//			chain.doFilter(request, new HttpServletResponseWrapper(response) {
-//			      public void setHeader(String name, String value) {
-//			          if ("etag".equalsIgnoreCase(name)) {
-//			        	  super.setHeader("X-ex-etag", value);
-//			        	  (new Exception()).printStackTrace();
-//			          }else{
-//			              super.setHeader(name, value);
-//			          }
-//			      }
-//			  });
-//		}else{
-			chain.doFilter(request, response);
-//		}
+		chain.doFilter(request, response);
 	}
 
 	private boolean isEnabled() {
