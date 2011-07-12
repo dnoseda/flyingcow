@@ -10,7 +10,7 @@ import com.studentsonly.grails.plugins.uiperformance.postprocess.JsTagPostProces
 
 class UiPerformanceGrailsPlugin {
 
-	String version = '1.2.12'
+	String version = '1.2.13'
 	String grailsVersion = '1.0 > *'
 	Map dependsOn = [:]
 	List pluginExcludes = [

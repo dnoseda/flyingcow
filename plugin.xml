@@ -1,4 +1,4 @@
-<plugin name='ui-performance' version='1.2.12' grailsVersion='1.0 &gt; *'>
+<plugin name='ui-performance' version='1.2.13' grailsVersion='1.0 &gt; *'>
   <author>Burt Beckwith</author>
   <authorEmail>burt@burtbeckwith.com</authorEmail>
   <title>Grails UI Performance Plugin</title>

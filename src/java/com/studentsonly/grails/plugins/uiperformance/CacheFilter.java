@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.io.File;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -69,13 +70,11 @@ public class CacheFilter implements Filter {
 	}
 	public static String getClassesDir() {
 		return CacheFilter.class
-			.getProtectionDomain().getCodeSource().getLocation().getPath().replaceAll("/class/com/studentsonly/grails/plugins/CacheFilter\\.class","");
+			.getProtectionDomain().getCodeSource().getLocation().getPath().replaceAll("/WEB-INF/classes/com/studentsonly/grails/plugins/uiperformance/CacheFilter.class","");
 	}
 	private boolean exists(String uri){
-		System.out.println("clases dir " + getClassesDir());
 		File file = new File(new File(getClassesDir()),uri);
 
-		System.out.println("clases file " +file);
 		return file.exists();
 
 	}
