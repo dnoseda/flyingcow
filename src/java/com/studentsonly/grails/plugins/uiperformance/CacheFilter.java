@@ -49,13 +49,13 @@ public class CacheFilter implements Filter {
 	 * 	javax.servlet.FilterChain)
 	 */
 	public void doFilter(final ServletRequest req, final ServletResponse res, final FilterChain chain)
-			throws IOException, ServletException {
+		throws IOException, ServletException {
 
 		HttpServletRequest request = (HttpServletRequest)req;
 		HttpServletResponse response = (HttpServletResponse)res;
 		String uri = request.getRequestURI();
 		boolean cached = false;
-		if (isEnabled() && isCacheable(uri)) {
+		if (isEnabled() && isCacheable(uri) && exists(uri)) {
 			response.setDateHeader("Expires", System.currentTimeMillis() + TEN_YEARS_MILLIS);
 			response.setHeader("Cache-Control", MAX_AGE);
 			if (uri.endsWith(".gz.css") || uri.endsWith(".gz.js")) {
@@ -67,6 +67,19 @@ public class CacheFilter implements Filter {
 
 		chain.doFilter(request, response);
 	}
+	public static String getClassesDir() {
+		return CacheFilter.class
+			.getProtectionDomain().getCodeSource().getLocation().getPath().replaceAll("/class/com/studentsonly/grails/plugins/CacheFilter\\.class","");
+	}
+	private boolean exists(String uri){
+		System.out.println("clases dir " + getClassesDir());
+		File file = new File(new File(getClassesDir()),uri);
+
+		System.out.println("clases file " +file);
+		return file.exists();
+
+	}
+
 
 	private boolean isEnabled() {
 		return getConfigBoolean("enabled");
@@ -138,25 +151,25 @@ public class CacheFilter implements Filter {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void findExclusions() {
-		_exclusions = (List<String>)getConfigProperty("exclusions");
-		if (_exclusions == null) {
-			_exclusions = Collections.emptyList();
+		private void findExclusions() {
+			_exclusions = (List<String>)getConfigProperty("exclusions");
+			if (_exclusions == null) {
+				_exclusions = Collections.emptyList();
+			}
 		}
-	}
 
 	private Object getConfigProperty(final String name) {
 		return ConfigurationHolder.getFlatConfig().get("uiperformance." + name);
 	}
 
 	@SuppressWarnings("unchecked")
-	private void initImageExtensions() {
-		List<String> imageExtensions = (List<String>)getConfigProperty("imageExtensions");
-		if (imageExtensions == null) {
-			imageExtensions = DEFAULT_IMAGE_EXTENSIONS;
+		private void initImageExtensions() {
+			List<String> imageExtensions = (List<String>)getConfigProperty("imageExtensions");
+			if (imageExtensions == null) {
+				imageExtensions = DEFAULT_IMAGE_EXTENSIONS;
+			}
+			EXTENSIONS.addAll(imageExtensions);
 		}
-		EXTENSIONS.addAll(imageExtensions);
-	}
 
 	/**
 	 * {@inheritDoc}
