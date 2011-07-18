@@ -46,6 +46,8 @@ void versionResources(name, stagingDir) {
 				if(!(new File(tempName)).exists()){
 					// is url- add a curl to /temp
 					execCmd("curl -vs -o $tempName $war")
+				}else{
+					println "file $tempName already exists; don't going to download"
 				}
 				execCmd("unzip -u -n $tempName js* css* images* -d $stagingDir")
 			}else if((new File(war)).exists()){
