@@ -1,3 +1,4 @@
+
 import grails.util.GrailsUtil
 
 /**
@@ -35,4 +36,26 @@ void versionResources(name, stagingDir) {
 	String className = 'com.studentsonly.grails.plugins.uiperformance.ResourceVersionHelper'
 	def helper = Class.forName(className, true, classLoader).newInstance()
 	helper.version stagingDir, basedir
+	println "checking for older wars ${(boolean)config.olderwars}"
+	if( config.olderwars){
+		config.olderwars.each { war ->
+			// if is file
+			println "visiting $war exists? ${(new File(war)).exists()}"
+			if(isURLValid(war)){
+				// is url- add a curl to /temp
+				execCmd("curl -vs -o /tmp/elderToInclude.war $war")
+				execCmd("unzip -u -n /tmp/elderToInclude.war js* css* images* -d $stagingDir")
+			}else if((new File(war)).exists()){
+				execCmd("unzip -u -n $war js* css* images* -d $stagingDir")
+			}
+		}
+	}
 }
+void execCmd(String s){
+	println "executing '$s'..."
+	println s.execute().getText()
+}
+
+Boolean isURLValid(input) { 
+	return input ==~ /\b(https?|ftp|file):\/\/[-A-Za-z0-9+&@#\/%?=~_|!:,.;]*[-A-Za-z0-9+&@#\/%=~_|]/ 
+} 
