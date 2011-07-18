@@ -42,9 +42,12 @@ void versionResources(name, stagingDir) {
 			// if is file
 			println "visiting $war exists? ${(new File(war)).exists()}"
 			if(isURLValid(war)){
-				// is url- add a curl to /temp
-				execCmd("curl -vs -o /tmp/elderToInclude.war $war")
-				execCmd("unzip -u -n /tmp/elderToInclude.war js* css* images* -d $stagingDir")
+				def tempName = "/tmp/uiperf-temp-"+war.replaceAll(/(.*\/|\.war)/,"")
+				if(!(new File(tempName)).exists()){
+					// is url- add a curl to /temp
+					execCmd("curl -vs -o $tempName $war")
+				}
+				execCmd("unzip -u -n $tempName js* css* images* -d $stagingDir")
 			}else if((new File(war)).exists()){
 				execCmd("unzip -u -n $war js* css* images* -d $stagingDir")
 			}
