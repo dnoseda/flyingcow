@@ -45,6 +45,7 @@ void versionResources(name, stagingDir) {
 				def tempName = "/tmp/uiperf-temp-"+war.replaceAll(/(.*\/|\.war)/,"")
 				if(!(new File(tempName)).exists()){
 					// is url- add a curl to /temp
+					println "file $tempName doesn't exists; downloading it"
 					execCmd("curl -vs -o $tempName $war")
 				}else{
 					println "file $tempName already exists; don't going to download"
