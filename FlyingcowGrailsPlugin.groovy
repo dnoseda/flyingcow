@@ -8,22 +8,27 @@ import com.studentsonly.grails.plugins.uiperformance.postprocess.CssTagPostProce
 import com.studentsonly.grails.plugins.uiperformance.postprocess.ImageTagPostProcessor
 import com.studentsonly.grails.plugins.uiperformance.postprocess.JsTagPostProcessor
 
-class UiPerformanceGrailsPlugin {
+class FlyingcowGrailsPlugin {
+    // the plugin version
+    def version = "0.1"
+    // the version or versions of Grails the plugin is designed for
+    def grailsVersion = "1.3.5 > *"
+    // the other plugins this plugin depends on
+    def dependsOn = [:]
+    // resources that are excluded from plugin packaging
+    def pluginExcludes = [
+            "grails-app/views/error.gsp"
+    ]
 
-	String version = '1.3.2'
-	String grailsVersion = '1.0 > *'
-	Map dependsOn = [:]
-	List pluginExcludes = [
-		'lib/build/*.jar',
-		'lib/easymock.jar',
-		'src/groovy/com/studentsonly/grails/plugins/uiperformance/taglib/AbstractTaglibTest.groovy'
-	]
+    // TODO Fill in these fields
+    def author = "Damian Noseda"
+    def authorEmail = "dnoseda@gmail.com"
+    def title = "Front Performance, based on uiperformance from Burt Beckwith (http://www.grails.org/plugin/ui-performance)"
+    def description = '''\\
+Front Performance, based on uiperformance from Burt Beckwith (http://www.grails.org/plugin/ui-performance) with additionals goodies
+'''
 
-	String author = 'Burt Beckwith'
-	String authorEmail = 'burt@burtbeckwith.com'
-	String title = 'Grails UI Performance Plugin'
-	String description = "Taglibs and Filter to implement some of the Yahoo performance team's 14 rules"
-	String documentation = 'http://grails.org/plugin/ui-performance'
+    def documentation = "http://grails.org/plugin/flyingcow"
 
 	private static final String COMPRESSING_FILTER_CLASS =
 		'com.planetj.servlet.filter.compression.CompressingFilter'
