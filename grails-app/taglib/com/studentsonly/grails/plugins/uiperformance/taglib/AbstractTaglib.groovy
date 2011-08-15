@@ -29,7 +29,7 @@ abstract class AbstractTaglib {
 		return extra
 	}
 
-	protected String generateRelativePath(dir, name, extension, plugin, absolute) {		
+	protected String generateRelativePath(dir, name, extension, plugin, absolute,def pluginContext = false) {		
 		if ('true' == absolute) {
 			return name
 		}
@@ -42,7 +42,14 @@ abstract class AbstractTaglib {
 		if (!baseUri.endsWith('/')) {
 			path.append '/'
 		}
-		String requestPluginContext = plugin ? pluginContextPath : ''
+		
+		String requestPluginContext = ''
+		if(!pluginContext){
+			requestPluginContext = plugin ? plugin : ''
+		}else{
+			requestPluginContext = plugin ? pluginContextPath : ''
+		}
+		
 		if (requestPluginContext) {
 			path.append (requestPluginContext.startsWith('/') ? requestPluginContext.substring(1) : requestPluginContext)
 			path.append '/'

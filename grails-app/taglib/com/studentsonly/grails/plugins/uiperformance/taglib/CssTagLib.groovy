@@ -34,7 +34,7 @@ class CssTagLib extends AbstractTaglib {
 
 		String rel = attrs.remove('rel') ?: 'stylesheet'
 		String link = generateRelativePath('css', name, '.css',
-				attrs.remove('plugin'), attrs.remove('absolute'))
+				attrs.plugin, attrs.remove('absolute'))
 		String html = "<link rel='$rel' type='text/css' href='$link'${generateExtraAttributes(attrs)} />"
 
 		if (cssTagPostProcessor) {
@@ -59,7 +59,7 @@ class CssTagLib extends AbstractTaglib {
 		String rel = attrs.remove('rel') ?: 'stylesheet'
 		
 		String link = generateRelativePath('css', name, '.css',
-				attrs.remove('plugin'), attrs.remove('absolute'))
+				attrs.plugin, attrs.remove('absolute'))
 		String html = "<link rel='$rel' type='text/css' href='$link'${generateExtraAttributes(attrs)} />"
 		if (cssTagPostProcessor) {
  			html = cssTagPostProcessor.process(html, request)

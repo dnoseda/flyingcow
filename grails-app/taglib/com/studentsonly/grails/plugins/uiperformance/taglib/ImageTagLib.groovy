@@ -49,7 +49,7 @@ class ImageTagLib extends AbstractTaglib {
 		}
 
 		String link = generateRelativePath('images', attrs.remove('src'), '',
-				attrs.remove('plugin'), attrs.remove('absolute'))
+				attrs.plugin, attrs.remove('absolute'))
 
 		link = "'$link'"
 		if (imageTagPostProcessor) {
@@ -75,7 +75,7 @@ class ImageTagLib extends AbstractTaglib {
 		else {
 			src = '/favicon.ico'
 		}
-		src = generateRelativePath(null, src, null, attrs.remove('plugin'), attrs.remove('absolute'))
+		src = generateRelativePath(null, src, null, attrs.plugin, attrs.remove('absolute'))
 
 		String rel = attrs.remove('rel') ?: 'icon'
 		String type = ext == 'ico' ? 'vnd.microsoft.icon' : ext
@@ -99,7 +99,7 @@ class ImageTagLib extends AbstractTaglib {
 		// TODO  this should be done in the post processor
 		String spriteClass = getSpriteClass(link)
 		if (spriteClass) {
-			link = generateRelativePath('images', 'spacer.gif', '', true, false)
+			link = generateRelativePath('images', 'spacer.gif', '', true, false,true)
 
 			if (attrs.'class') {
 				attrs.'class' += " $spriteClass"
@@ -109,7 +109,7 @@ class ImageTagLib extends AbstractTaglib {
 			}
 		}
 		else {
-			link = generateRelativePath('images', link, '', attrs.remove('plugin'), attrs.remove('absolute'))
+			link = generateRelativePath('images', link, '', attrs.plugin, attrs.remove('absolute'))
 		}
 
 		String borderAttr = attrs.remove('border')

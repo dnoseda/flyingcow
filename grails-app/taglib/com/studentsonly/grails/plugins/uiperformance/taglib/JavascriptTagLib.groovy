@@ -32,7 +32,7 @@ class JavascriptTagLib extends AbstractTaglib {
 		}
 
 		String link = generateRelativePath('js', attrs.remove('src'), '.js',
-				attrs.remove('plugin'), attrs.remove('absolute'))
+				attrs.plugin, attrs.remove('absolute'))
 		String html = "<script type='text/javascript' src='$link'${generateExtraAttributes(attrs)}></script>"
 
 		if (jsTagPostProcessor) {
