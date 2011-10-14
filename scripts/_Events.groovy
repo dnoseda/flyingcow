@@ -50,8 +50,16 @@ void versionResources(name, stagingDir) {
 				}else{
 					println "file $tempName already exists; don't going to download"
 				}
+				if(war.endsWith(".tar.gz")){
+					execCmd("tar xvfz $tempName ml-build/ROOT.war")
+					tempName = "ml-build/ROOT.war"
+				}
 				execCmd("unzip -u -n $tempName js* css* images* -d $stagingDir")
 			}else if((new File(war)).exists()){
+				if(war.endsWith(".tar.gz")){
+					execCmd("tar xvfz $war ml-build/ROOT.war")I                                        
+					war = "ml-build/ROOT.war"
+				}
 				execCmd("unzip -u -n $war js* css* images* -d $stagingDir")
 			}
 		}
