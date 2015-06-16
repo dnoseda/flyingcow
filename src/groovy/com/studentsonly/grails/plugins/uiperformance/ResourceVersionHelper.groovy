@@ -237,7 +237,7 @@ class ResourceVersionHelper {
 			if(index >0 ){
 				cssuri = line.substring(index + 4, line.indexOf(')', index))
 			}
-			if (!processImages || index == -1 || cssuri?.contains('http') || isData) {
+			if (!processImages || index == -1 || cssuri?.contains('http') || cssuri?.contains('secure.mlstatic.com') || isData) {
 				css.append line
 			}
 			else {
